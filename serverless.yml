@@ -1,0 +1,10 @@
+org: caiopotter
+app: minion-seller
+name: react-starter
+component: website
+
+inputs:
+  src:
+    src: ./src
+    hook: npm run build
+    dist: ./build
