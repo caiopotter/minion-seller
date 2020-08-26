@@ -3,6 +3,8 @@ import '../App.css';
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import mailApi from '../mailApi';
 import minionApi from '../minionApi';
+import Figure from 'react-bootstrap/Figure';
+import FigureImage from 'react-bootstrap/FigureImage';
 
 class Reservation extends React.Component {
     constructor(props) {
@@ -28,6 +30,7 @@ class Reservation extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.mountEmailText = this.mountEmailText.bind(this); 
+        this.formatMinions = this.formatMinions.bind(this);
     }
 
     handleChange(event) {
@@ -61,12 +64,39 @@ class Reservation extends React.Component {
         return emailText;
     }
 
+    formatMinions(){
+        console.log('aqui', this.state.minions)
+        if(this.state.minions){
+            return (
+            <div>
+            {this.state.minions.map((minion, index) => (
+              <div key={index}>
+                <div >
+                    <Figure>
+                        <FigureImage 
+                        width={150}
+                        height={150}
+                        alt={minion.description}
+                        src={minion.image}/>
+                        </Figure>
+                </div>
+                <div>{minion.name}</div>
+                <div>{minion.description}</div>
+              </div>
+            ))}
+            </div> )
+        }
+        return <div></div>
+        
+    }
+
     render(){
         return (
             <div className="App">
                 <Container className="App-body">
                     <Row>
                         <Col xs={12} md={6}>
+                            <div><this.formatMinions></this.formatMinions></div>
                         </Col>
                         <Col xs={12} md={6}>
                             <Form onSubmit={this.handleSubmit}>
