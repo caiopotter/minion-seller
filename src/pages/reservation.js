@@ -1,7 +1,8 @@
 import React from 'react';
 import '../App.css';
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
-import api from '../api';
+import mailApi from '../mailApi';
+import minionApi from '../minionApi';
 
 class Reservation extends React.Component {
     constructor(props) {
@@ -12,11 +13,21 @@ class Reservation extends React.Component {
             email: '',
             userText: '',
             country: '',
+            minions: [],
         };
+
+        minionApi.post('dynamo-manager', {
+            "operation": "list",
+            "payload": {
+              "TableName": "Minion"
+            }
+          }).then(res =>{
+              this.setState({minions: res.data.Items})
+          })
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.mountEmailText = this.mountEmailText.bind(this);
+        this.mountEmailText = this.mountEmailText.bind(this); 
     }
 
     handleChange(event) {
@@ -26,7 +37,7 @@ class Reservation extends React.Component {
     
     handleSubmit(event) {
         let emailText = this.mountEmailText();
-        api.post(`SendEmailLambda`, { from: 'limapotter@gmail.com',
+        mailApi.post(`SendEmailLambda`, { from: 'limapotter@gmail.com',
         to: 'limapotter@gmail.com',
         text: emailText,
         subject: 'success' }).then(res => {
@@ -55,7 +66,9 @@ class Reservation extends React.Component {
             <div className="App">
                 <Container className="App-body">
                     <Row>
-                        <Col xs={12} md={12}>
+                        <Col xs={12} md={6}>
+                        </Col>
+                        <Col xs={12} md={6}>
                             <Form onSubmit={this.handleSubmit}>
                                 <h2 className="text-center">Reserve seu pedido</h2>
                                 <Row>
@@ -100,4 +113,5 @@ class Reservation extends React.Component {
         );
     }
 }
+
 export default Reservation;

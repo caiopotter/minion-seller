@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const api = axios.create({
+const mailApi = axios.create({
     baseURL: 'https://ccopo4agr5.execute-api.us-east-1.amazonaws.com/default/',
     headers: {
 		'Content-Type': 'application/json',
@@ -9,4 +9,4 @@ const api = axios.create({
 	}
 });
 
-export default api;
+export default mailApi;
