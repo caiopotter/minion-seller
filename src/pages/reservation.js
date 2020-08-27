@@ -31,6 +31,7 @@ class Reservation extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.mountEmailText = this.mountEmailText.bind(this); 
+        this.mountAdminEmailText = this.mountAdminEmailText.bind(this); 
         this.formatMinions = this.formatMinions.bind(this);
         this.handleOrderQuantity = this.handleOrderQuantity.bind(this);
     }
@@ -42,10 +43,15 @@ class Reservation extends React.Component {
     
     handleSubmit(event) {
         let emailText = this.mountEmailText();
+        let adminEmailText = this.mountAdminEmailText();
         mailApi.post(`SendEmailLambda`, { from: 'limapotter@gmail.com',
-        to: 'limapotter@gmail.com',
-        text: emailText,
-        subject: 'success' }).then(res => {
+            to: 'limapotter@gmail.com',
+            text: emailText,
+            subject: 'success',
+            adminTo: 'limapotter@gmail.com',
+            adminText: adminEmailText,
+            adminSubject: 'Outra reserva!'
+        }).then(res => {
             console.log(res);
             console.log(res.data);
         })
@@ -101,6 +107,20 @@ class Reservation extends React.Component {
         emailText = emailText + `Lembre-se que estamos sempre por aqui para o caso de dúvidas.\nQuando tivermos atualizações do seu produto, você será a primeira pessoa a saber! :D`
 
         return emailText;
+    }
+
+    mountAdminEmailText(){
+        let adminEmailText = `Você conseguiu outra reserva! Abaixo estão os dados do comprador para você conferir, se quiser.\n\n
+        Pedido:\n${this.mountOrderInEmail()}\n\n
+        Dados do comprador:\nNome completo: ${this.state.name} ${this.state.surname}\nEmail: ${this.state.email}\nPaís: ${this.state.country}\n`
+
+        if(this.state.userText){
+            adminEmailText = adminEmailText + `Observações do comprador: ${this.state.userText}\n`
+        }
+
+        adminEmailText = adminEmailText + `Não se preocupe, esses dados foram automaticamente para a base de dados. No momento, você só precisa curtir sua nova reserva! :D`;
+
+        return adminEmailText;
     }
 
     formatMinions(){
