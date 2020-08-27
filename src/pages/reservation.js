@@ -18,8 +18,25 @@ class Reservation extends React.Component {
             country: '',
             minions: [],
             order: [],
+            loading: false,
         };
 
+        this.initialState = this.state;
+
+        this.getMinions = this.getMinions.bind(this);
+
+        this.getMinions();
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.mountEmailText = this.mountEmailText.bind(this); 
+        this.mountAdminEmailText = this.mountAdminEmailText.bind(this); 
+        this.formatMinions = this.formatMinions.bind(this);
+        this.handleOrderQuantity = this.handleOrderQuantity.bind(this);
+        this.clearOrderForm = this.clearOrderForm.bind(this);
+    }
+
+    getMinions(){
         minionApi.post('dynamo-manager', {
             "operation": "list",
             "payload": {
@@ -28,13 +45,6 @@ class Reservation extends React.Component {
           }).then(res =>{
               this.setState({minions: res.data.Items})
           })
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.mountEmailText = this.mountEmailText.bind(this); 
-        this.mountAdminEmailText = this.mountAdminEmailText.bind(this); 
-        this.formatMinions = this.formatMinions.bind(this);
-        this.handleOrderQuantity = this.handleOrderQuantity.bind(this);
     }
 
     handleChange(event) {
@@ -45,36 +55,41 @@ class Reservation extends React.Component {
     handleSubmit(event) {
         let emailText = this.mountEmailText();
         let adminEmailText = this.mountAdminEmailText();
-        minionApi.post('dynamo-manager', {
-            "operation": "create",
-            "payload": {
-                "TableName": "Pedido",
-                "Item": {
-                    "email": this.state.email,
-                    "date": moment().format(),
-                    "country": this.state.country,
-                    "name": this.state.name,
-                    "surname": this.state.surname,
-                    "observations": this.state.userText,
-                    "order": this.state.order
+        this.setState({loading: true});
+            minionApi.post('dynamo-manager', {
+                "operation": "create",
+                "payload": {
+                    "TableName": "Pedido",
+                    "Item": {
+                        "email": this.state.email,
+                        "date": moment().format(),
+                        "country": this.state.country,
+                        "name": this.state.name,
+                        "surname": this.state.surname,
+                        "observations": this.state.userText,
+                        "order": this.state.order
+                    }
                 }
-            }
-        }).then(res =>{
-            mailApi.post(`SendEmailLambda`, { from: 'limapotter@gmail.com',
-                to: 'limapotter@gmail.com',
-                text: emailText,
-                subject: 'success',
-                adminTo: 'limapotter@gmail.com',
-                adminText: adminEmailText,
-                adminSubject: 'Outra reserva!'
-            }).then(res => {
-                console.log(res);
-                console.log(res.data);
+            }).then(res =>{
+                mailApi.post(`SendEmailLambda`, { from: 'limapotter@gmail.com',
+                    to: 'limapotter@gmail.com',
+                    text: emailText,
+                    subject: 'success',
+                    adminTo: 'limapotter@gmail.com',
+                    adminText: adminEmailText,
+                    adminSubject: 'Outra reserva!'
+                }).then(res => {
+                    this.setState({loading: false})
+                    alert('Pedido realizado!')
+                    this.clearOrderForm();
+                })
             })
-        })
-        
-
         event.preventDefault();
+    }
+
+    clearOrderForm(){
+        this.setState(this.initialState);
+        this.getMinions();
     }
 
     handleOrderQuantity(event){
@@ -212,8 +227,8 @@ class Reservation extends React.Component {
                                     <Form.Label>Observações</Form.Label>
                                     <Form.Control name="userText" value={this.state.userText} onChange={this.handleChange} as="textarea" rows="3" />
                                 </Form.Group>
-                                <Button variant="primary" type="submit">
-                                    Reservar
+                                <Button variant="primary" disabled={this.state.loading} type="submit">
+                                    {this.state.loading ? 'Reservando...' : 'Reservar'}
                                 </Button>
                             </Form>
                         </Col>
