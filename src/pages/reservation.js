@@ -16,6 +16,7 @@ class Reservation extends React.Component {
             userText: '',
             country: '',
             minions: [],
+            order: [],
         };
 
         minionApi.post('dynamo-manager', {
@@ -31,6 +32,7 @@ class Reservation extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.mountEmailText = this.mountEmailText.bind(this); 
         this.formatMinions = this.formatMinions.bind(this);
+        this.handleOrderQuantity = this.handleOrderQuantity.bind(this);
     }
 
     handleChange(event) {
@@ -51,8 +53,45 @@ class Reservation extends React.Component {
         event.preventDefault();
     }
 
+    handleOrderQuantity(event){
+        this.createOrUpdateOrder(event.target.name, event.target.value)
+    }
+
+    createOrUpdateOrder(name, quantity) {
+        let orderArray = this.state.order;
+        const found = orderArray.some(el => el.name === name);
+        if (found){
+            orderArray = this.removeByAttr(orderArray, 'name', name);
+        }
+        orderArray.push({ name: name, quantity: quantity });
+        this.setState({order: orderArray})
+    }
+
+    removeByAttr(arr, attr, value){
+        var i = arr.length;
+        while(i--){
+           if( arr[i] 
+               && arr[i].hasOwnProperty(attr) 
+               && (arguments.length > 2 && arr[i][attr] === value ) ){ 
+    
+               arr.splice(i,1);
+    
+           }
+        }
+        return arr;
+    }
+
+    mountOrderInEmail(){
+        let orderText = '';
+        for(let order of this.state.order){
+            orderText = orderText + `Nome: ${order.name} - Quantidade: ${order.quantity}\n`
+        }
+        return orderText
+    }
+
     mountEmailText(){
         let emailText = `Olá ${this.state.name}, tudo bem?\nSó pra avisar que seu pedido foi reservado!\nEnquanto espera, tire um momento para confirmar seus dados, e caso encontre algo errado, não hesite em nos chamar!\n\n
+        Seu pedido:\n${this.mountOrderInEmail()}\n\n
         Seus dados:\nNome completo: ${this.state.name} ${this.state.surname}\nEmail: ${this.state.email}\nPaís: ${this.state.country}\n`
 
         if(this.state.userText){
@@ -65,8 +104,7 @@ class Reservation extends React.Component {
     }
 
     formatMinions(){
-        console.log('aqui', this.state.minions)
-        if(this.state.minions){
+        if(this.state.minions.length > 0){
             return (
             <div>
             {this.state.minions.map((minion, index) => (
@@ -82,6 +120,11 @@ class Reservation extends React.Component {
                 </div>
                 <div>{minion.name}</div>
                 <div>{minion.description}</div>
+                <div>
+                    <label>Quantidade:</label>
+                    <input onChange={this.handleOrderQuantity} type="number" name={minion.name} step="1"></input>
+                </div>
+
               </div>
             ))}
             </div> )
