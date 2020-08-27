@@ -5,6 +5,7 @@ import mailApi from '../mailApi';
 import minionApi from '../minionApi';
 import Figure from 'react-bootstrap/Figure';
 import FigureImage from 'react-bootstrap/FigureImage';
+import moment from 'moment';
 
 class Reservation extends React.Component {
     constructor(props) {
@@ -44,17 +45,34 @@ class Reservation extends React.Component {
     handleSubmit(event) {
         let emailText = this.mountEmailText();
         let adminEmailText = this.mountAdminEmailText();
-        mailApi.post(`SendEmailLambda`, { from: 'limapotter@gmail.com',
-            to: 'limapotter@gmail.com',
-            text: emailText,
-            subject: 'success',
-            adminTo: 'limapotter@gmail.com',
-            adminText: adminEmailText,
-            adminSubject: 'Outra reserva!'
-        }).then(res => {
-            console.log(res);
-            console.log(res.data);
+        minionApi.post('dynamo-manager', {
+            "operation": "create",
+            "payload": {
+                "TableName": "Pedido",
+                "Item": {
+                    "email": this.state.email,
+                    "date": moment().format(),
+                    "country": this.state.country,
+                    "name": this.state.name,
+                    "surname": this.state.surname,
+                    "observations": this.state.userText,
+                    "order": this.state.order
+                }
+            }
+        }).then(res =>{
+            mailApi.post(`SendEmailLambda`, { from: 'limapotter@gmail.com',
+                to: 'limapotter@gmail.com',
+                text: emailText,
+                subject: 'success',
+                adminTo: 'limapotter@gmail.com',
+                adminText: adminEmailText,
+                adminSubject: 'Outra reserva!'
+            }).then(res => {
+                console.log(res);
+                console.log(res.data);
+            })
         })
+        
 
         event.preventDefault();
     }
