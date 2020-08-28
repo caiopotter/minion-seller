@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, Card, CardDeck } from "react-bootstrap";
 import mailApi from '../mailApi';
 import minionApi from '../minionApi';
 import Figure from 'react-bootstrap/Figure';
@@ -160,26 +160,33 @@ class Reservation extends React.Component {
         if(this.state.minions.length > 0){
             return (
             <div>
+            <CardDeck>
             {this.state.minions.map((minion, index) => (
               <div key={index}>
-                <div >
+                <Card className="mt-2" style={{ width: '18rem', 'background-color': '#ffffffb3' }}>
                     <Figure>
                         <FigureImage 
                         width={150}
                         height={150}
                         alt={minion.description}
                         src={minion.image}/>
-                        </Figure>
-                </div>
-                <div>{minion.name}</div>
-                <div>{minion.description}</div>
-                <div>
-                    <label>Quantidade:</label>
-                    <input onChange={this.handleOrderQuantity} type="number" name={minion.name} step="1"></input>
-                </div>
-
+                    </Figure>
+                    <Card.Body>
+                        <Card.Title>{minion.name}</Card.Title>
+                    <Card.Text>
+                        {minion.description}
+                    </Card.Text>
+                    </Card.Body>
+                    <Card.Footer>
+                        <div>
+                            <label>Quantidade:</label>
+                            <input onChange={this.handleOrderQuantity} type="number" name={minion.name} step="1"></input>
+                        </div>
+                    </Card.Footer>
+                </Card>
               </div>
             ))}
+            </CardDeck>
             </div> )
         }
         return <div></div>
@@ -189,29 +196,29 @@ class Reservation extends React.Component {
     render(){
         return (
             <div className="App">
-                <Container className="App-body">
+                <Container className="">
                     <Row>
-                        <Col xs={12} md={6}>
+                        <Col xs={12}>
                             <div><this.formatMinions></this.formatMinions></div>
                         </Col>
-                        <Col xs={12} md={6}>
-                            <Form onSubmit={this.handleSubmit}>
+                        <Col xs={12}>
+                            <Form onSubmit={this.handleSubmit} className="reservation-form">
                                 <h2 className="text-center">Reserve seu pedido</h2>
                                 <Row>
                                     <Form.Group as={Col} controlId="formName">
                                         <Form.Label>Nome*</Form.Label>
-                                        <Form.Control required name="name" onChange={this.handleChange} type="name" placeholder="Escreva seu nome" />
+                                        <Form.Control className="reservation-input" required name="name" onChange={this.handleChange} type="name" placeholder="Escreva seu nome" />
                                     </Form.Group>
                                 </Row>
                                 <Row>
                                     <Form.Group as={Col} controlId="formSurname">
                                         <Form.Label>Sobrenome*</Form.Label>
-                                        <Form.Control required name="surname" value={this.state.surname} onChange={this.handleChange} type="surname" placeholder="Escreva seu sobrenome" />
+                                        <Form.Control className="reservation-input" required name="surname" value={this.state.surname} onChange={this.handleChange} type="surname" placeholder="Escreva seu sobrenome" />
                                     </Form.Group>
                                 </Row>
                                 <Form.Group controlId="country">
                                     <Form.Label>País*</Form.Label>
-                                    <Form.Control as="select" name="country" value={this.state.country} onChange={this.handleChange}>
+                                    <Form.Control className="reservation-input" as="select" name="country" value={this.state.country} onChange={this.handleChange}>
                                         <option>Argentina</option>
                                         <option>Brasil</option>
                                         <option>Chile</option>
@@ -221,11 +228,11 @@ class Reservation extends React.Component {
                                 </Form.Group>
                                 <Form.Group controlId="formBasicEmail">
                                     <Form.Label>Email*</Form.Label>
-                                    <Form.Control required name="email" value={this.state.email} onChange={this.handleChange} type="email" placeholder="Escreva seu email" />
+                                    <Form.Control className="reservation-input" required name="email" value={this.state.email} onChange={this.handleChange} type="email" placeholder="Escreva seu email" />
                                 </Form.Group>
                                 <Form.Group controlId="userText">
                                     <Form.Label>Observações</Form.Label>
-                                    <Form.Control name="userText" value={this.state.userText} onChange={this.handleChange} as="textarea" rows="3" />
+                                    <Form.Control className="reservation-input" name="userText" value={this.state.userText} onChange={this.handleChange} as="textarea" rows="3" />
                                 </Form.Group>
                                 <Button variant="primary" disabled={this.state.loading} type="submit">
                                     {this.state.loading ? 'Reservando...' : 'Reservar'}

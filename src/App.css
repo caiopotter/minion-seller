@@ -35,6 +35,33 @@ body {
   color: white;
 }
 
+.reservation-form{
+  margin-top: 48px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (min-width: 1200px){
+  .reservation-input{
+    width: 30vw !important;
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  .reservation-input{
+    width: 50vw !important;
+  }
+}
+
+@media screen and (max-width: 601px) {
+  .reservation-input{
+    width: 90vw !important;
+  }
+}
+
+
 .App-section {
   background-color: #fbd85d !important;
 }
