@@ -207,7 +207,7 @@ class Reservation extends React.Component {
                                 <Row>
                                     <Form.Group as={Col} controlId="formName">
                                         <Form.Label>Nome*</Form.Label>
-                                        <Form.Control className="reservation-input" required name="name" onChange={this.handleChange} type="name" placeholder="Escreva seu nome" />
+                                        <Form.Control className="reservation-input" required name="name" value={this.state.name} onChange={this.handleChange} type="name" placeholder="Escreva seu nome" />
                                     </Form.Group>
                                 </Row>
                                 <Row>
