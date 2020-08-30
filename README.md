@@ -1,68 +1,63 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Preview-Screens](https://minion-seller-bucket.s3.amazonaws.com/SS-home.png)
 
-## Available Scripts
+![Preview-Screens](https://minion-seller-bucket.s3.amazonaws.com/SS-reservation.png)
 
-In the project directory, you can run:
+## Sobre o projeto
 
-### `npm start`
+Esse projeto tem como objetivo ser uma webapp simples e reativa, com frontend feito em React.js e backend utilizando tecnologias cloud como AWS e Serverless.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+A ideia do site é ter uma [Landing page](https://pt.wikipedia.org/wiki/Landing_page) para reserva de Minions, e uma página secundária de formulário, para que o usuário preencha alguns dados, selecione seus produtos e consolide sua reserva.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Demonstração
 
-### `npm test`
+Fique a vontade para testar as funcionalidades do site [aqui](https://d2srbxsz7klx41.cloudfront.net/). Porém, o envio de email é ilustrativo, uma vez que estou utilizando a camada gratuita do serviço [AWS SES](https://aws.amazon.com/pt/ses/), e preciso cadastrar previamente os endereços de email destinatários.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Por quê?
 
-### `npm run build`
+Esse projeto também serve como desafio pessoal, visto que é a primeira vez que utilizo as tecnologias citadas anteriormente.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Construção
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+O frontend do projeto foi feito com:
+- [React.js](https://pt-br.reactjs.org/)
+- [React Bootstrap](https://react-bootstrap.github.io/)
+- [Axios](https://github.com/axios/axios)
+- [Moment](https://momentjs.com/)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+O backend do projeto foi feito com:
+- [Amazon Web Services](https://aws.amazon.com/pt/)
+  - [S3](https://aws.amazon.com/pt/s3/)
+  - [SES](https://aws.amazon.com/pt/ses/)
+  - [API Gateway](https://aws.amazon.com/pt/api-gateway/)
+  - [Lambda](https://aws.amazon.com/pt/lambda/)
+  - [DynamoDB](https://aws.amazon.com/pt/dynamodb/)
+- [Serverless framework](https://www.serverless.com/)
 
-### `npm run eject`
+## Comunicação
+O frontend do app está hospedado na plataforma Serverless. O usuário acessa a url do site e a plataforma envia os dados ao web Browser.
+Enquanto carrega, o site no browser acessa o endpoint da API Gateway. Esse endpoint chama a função lambda responsável por pedir a lista de Minions no banco de dados DynamoDB.
+O banco de dados recebe o pedido e retorna a lista à função lambda, que retorna à API Gateway, que por sua vez, envia ao browser, exibindo os Minions disponíveis.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![diagram](https://minion-seller-bucket.s3.amazonaws.com/diagramaArquitetural.png)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Mais dois acessos aos endpoints da API gateway são realizados quando o usuário realiza seu pedido, com as seguintes funções:
+  - Enviar de email ao cliente e ao admin
+  - Salvar pedido no banco de dados (mesma estrutura do diagrama acima, dessa vez, utilizando http POST)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![SESDiagram](https://minion-seller-bucket.s3.amazonaws.com/DiagramaSES.png)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## AWS Api Gateway exemplos
 
-## Learn More
+Recuperar lista de minions:\
+![minionList](https://minion-seller-bucket.s3.amazonaws.com/list-dynamo.PNG)\
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Envio de email ao cliente a ao admin:\
+![sendEmail](https://minion-seller-bucket.s3.amazonaws.com/sendEmail.PNG)\
+Emails:\
+![emailSent](https://minion-seller-bucket.s3.amazonaws.com/emailSent.PNG)
+![emailSentAdmin](https://minion-seller-bucket.s3.amazonaws.com/emailSentAdmin.PNG)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Salvamento de pedido feito pelo usuário:\
+![saveOrder](https://minion-seller-bucket.s3.amazonaws.com/saveOrder.PNG)\
+Resultado no DynamoDB:\
+![dbOrder](https://minion-seller-bucket.s3.amazonaws.com/dbOrder.PNG)
