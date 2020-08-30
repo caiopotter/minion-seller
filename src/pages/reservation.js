@@ -72,11 +72,11 @@ class Reservation extends React.Component {
                     }
                 }
             }).then(res =>{
-                mailApi.post(`SendEmailLambda`, { from: 'limapotter@gmail.com',
-                    to: 'limapotter@gmail.com',
+                mailApi.post(`SendEmailLambda`, { from: 'thiago@bgcbrasil.com.br',
+                    to: 'thiago@bgcbrasil.com.br',
                     text: emailText,
                     subject: 'success',
-                    adminTo: 'limapotter@gmail.com',
+                    adminTo: 'thiago@bgcbrasil.com.br',
                     adminText: adminEmailText,
                     adminSubject: 'Outra reserva!'
                 }).then(res => {
