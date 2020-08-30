@@ -1,5 +1,7 @@
 import React from 'react';
 import logo from '../logo.svg';
+import mainHeader from '../images/mainHeader.jpg'
+import minions from '../images/minions.png'
 import '../App.css';
 import { Button } from "react-bootstrap";
 import { Container } from "react-bootstrap";
@@ -15,18 +17,18 @@ function Home() {
     return (
 
         <Container className="App">
+            <img src={mainHeader} className="App container" alt="logo" />
             <Row>
                 <Col xs={12}>
                     <header className="App-header">
-                        <img src={logo} className="App-logo" alt="logo" />
                         <h1>Minion Seller</h1>
                     </header>
                 </Col>
             </Row>
             <Row>
                 <Col xs={12} md={6}>
-                    <header className="App-body">
-                        <img src={logo} className="App-logo" alt="logo" />
+                    <header className="App-body" id={'features'}>
+                        <img src={minions} className="App container" alt="logo" />
                         <h1>Reserve seu minion!</h1>
                         <p>Os minions da Minion Seller são resistentes e divertidos, feitos com carinho por um time que os ama tanto quanto você!</p>
                     </header>
@@ -45,7 +47,8 @@ function Home() {
                 </Col>
             </Row>
             <Row>
-                <Col xs={12} md={4}>
+                <Col xs={12} className="mb-4"><h2>Avaliações</h2></Col>
+                <Col xs={12} md={4} id={'reviews'}>
                     <Figure>
                         <FigureImage 
                         width={150}

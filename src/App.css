@@ -4,6 +4,7 @@ body {
 
 .App {
   text-align: center;
+  background-color: white;
 }
 
 .App-logo {
@@ -18,26 +19,24 @@ body {
 }
 
 .App-header {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 64px;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-body {
-  min-height: 100vh;
+  margin-top: 64px;
+  margin-bottom: 64px;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .reservation-form{
   margin-top: 48px;
-  color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,6 +60,12 @@ body {
   }
 }
 
+.nav-bar {
+  text-align: center;
+  background-color: white;
+  margin-bottom: 52px;
+}
+
 
 .App-section {
   background-color: #fbd85d !important;
@@ -68,7 +73,6 @@ body {
 
 .review-text{
   font-weight: bold;
-  color:white;
 }
 
 .list {

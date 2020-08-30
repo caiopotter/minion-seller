@@ -7,16 +7,21 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+import { Container } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import NavBar from './components/NavBar';
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" component={Home} exact />
-        <Route path="/reservation" component={Reservation} />
-      </Switch>
-    </Router>
+    <Container>
+      <NavBar></NavBar>
+      <Router>
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/reservation" component={Reservation} />
+        </Switch>
+      </Router>
+    </Container>
   );
 }
 

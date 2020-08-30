@@ -163,7 +163,7 @@ class Reservation extends React.Component {
             <CardDeck>
             {this.state.minions.map((minion, index) => (
               <div key={index}>
-                <Card className="mt-2" style={{ width: '18rem', 'background-color': '#ffffffb3' }}>
+                <Card className="mt-2" style={{ width: '16rem', 'background-color': '#ffffffb3' }}>
                     <Figure>
                         <FigureImage 
                         width={150}
@@ -199,6 +199,7 @@ class Reservation extends React.Component {
                 <Container className="">
                     <Row>
                         <Col xs={12}>
+                        <h2 className="text-center">Escolha seus minions</h2> 
                             <div><this.formatMinions></this.formatMinions></div>
                         </Col>
                         <Col xs={12}>
@@ -241,7 +242,6 @@ class Reservation extends React.Component {
                         </Col>
                     </Row>
                 </Container>
-                <Button href="/" variant="secondary">Volta</Button>
             </div>
         );
     }
