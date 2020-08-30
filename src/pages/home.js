@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../logo.svg';
 import mainHeader from '../images/mainHeader.jpg'
 import minions from '../images/minions.png'
 import '../App.css';
@@ -47,8 +46,8 @@ function Home() {
                 </Col>
             </Row>
             <Row>
-                <Col xs={12} className="mb-4"><h2>Avaliações</h2></Col>
-                <Col xs={12} md={4} id={'reviews'}>
+                <Col xs={12} id={'reviews'} className="mb-4"><h2>Avaliações</h2></Col>
+                <Col xs={12} md={4}>
                     <Figure>
                         <FigureImage 
                         width={150}
