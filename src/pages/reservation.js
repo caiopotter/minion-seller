@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { Button, Form, Container, Row, Col, Card, CardDeck } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, Card, CardDeck, Spinner } from "react-bootstrap";
 import mailApi from '../mailApi';
 import minionApi from '../minionApi';
 import Figure from 'react-bootstrap/Figure';
@@ -18,7 +18,7 @@ class Reservation extends React.Component {
             country: '',
             minions: [],
             order: [],
-            loading: false,
+            loading: true,
         };
 
         this.initialState = this.state;
@@ -44,6 +44,7 @@ class Reservation extends React.Component {
             }
           }).then(res =>{
               this.setState({minions: res.data.Items})
+              this.setState({loading: false})
           })
     }
 
@@ -157,36 +158,43 @@ class Reservation extends React.Component {
     }
 
     formatMinions(){
+        if(this.state.loading){
+            return(
+            <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+            </Spinner>
+            )
+        }
         if(this.state.minions.length > 0){
             return (
             <div>
-            <CardDeck>
-            {this.state.minions.map((minion, index) => (
-              <div key={index}>
-                <Card className="mt-2" style={{ width: '16rem', 'background-color': '#ffffffb3' }}>
-                    <Figure>
-                        <FigureImage 
-                        width={150}
-                        height={150}
-                        alt={minion.description}
-                        src={minion.image}/>
-                    </Figure>
-                    <Card.Body>
-                        <Card.Title>{minion.name}</Card.Title>
-                    <Card.Text>
-                        {minion.description}
-                    </Card.Text>
-                    </Card.Body>
-                    <Card.Footer>
-                        <div>
-                            <label>Quantidade:</label>
-                            <input onChange={this.handleOrderQuantity} type="number" name={minion.name} step="1"></input>
-                        </div>
-                    </Card.Footer>
-                </Card>
-              </div>
-            ))}
-            </CardDeck>
+                <CardDeck>
+                {this.state.minions.map((minion, index) => (
+                <div key={index}>
+                    <Card className="mt-2" style={{ width: '16rem', 'backgroundColor': '#abccde' }}>
+                        <Figure>
+                            <FigureImage 
+                            width={150}
+                            height={150}
+                            alt={minion.description}
+                            src={minion.image}/>
+                        </Figure>
+                        <Card.Body>
+                            <Card.Title>{minion.name}</Card.Title>
+                        <Card.Text>
+                            {minion.description}
+                        </Card.Text>
+                        </Card.Body>
+                        <Card.Footer>
+                            <div>
+                                <label>Quantidade:</label>
+                                <input onChange={this.handleOrderQuantity} type="number" name={minion.name} step="1"></input>
+                            </div>
+                        </Card.Footer>
+                    </Card>
+                </div>
+                ))}
+                </CardDeck>
             </div> )
         }
         return <div></div>
