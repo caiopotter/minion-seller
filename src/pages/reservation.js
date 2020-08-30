@@ -15,7 +15,7 @@ class Reservation extends React.Component {
             surname: '',
             email: '',
             userText: '',
-            country: '',
+            country: 'Brasil',
             minions: [],
             order: [],
             loading: true,
@@ -160,7 +160,7 @@ class Reservation extends React.Component {
     formatMinions(){
         if(this.state.loading){
             return(
-            <Spinner animation="border" role="status">
+            <Spinner animation="border" role="status" variant="primary">
                     <span className="sr-only">Loading...</span>
             </Spinner>
             )
@@ -188,7 +188,7 @@ class Reservation extends React.Component {
                         <Card.Footer>
                             <div>
                                 <label>Quantidade:</label>
-                                <input onChange={this.handleOrderQuantity} type="number" name={minion.name} step="1"></input>
+                                <input onChange={this.handleOrderQuantity} type="number" name={minion.name} min="0" step="1"></input>
                             </div>
                         </Card.Footer>
                     </Card>
@@ -243,7 +243,7 @@ class Reservation extends React.Component {
                                     <Form.Label>Observações</Form.Label>
                                     <Form.Control className="reservation-input" name="userText" value={this.state.userText} onChange={this.handleChange} as="textarea" rows="3" />
                                 </Form.Group>
-                                <Button variant="primary" disabled={this.state.loading} type="submit">
+                                <Button className="mb-4" variant="primary" disabled={this.state.loading} type="submit">
                                     {this.state.loading ? 'Reservando...' : 'Reservar'}
                                 </Button>
                             </Form>
