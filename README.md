@@ -46,6 +46,11 @@ Mais dois acessos aos endpoints da API gateway são realizados quando o usuário
 
 ![SESDiagram](https://minion-seller-bucket.s3.amazonaws.com/DiagramaSES.png)
 
+## DynamoDB
+O banco de dados NoSql DynamoDB possui 2 tabelas: minion e pedido.\
+A tabela minion é onde a lista de minions fica armazenada, bastando acrescentar novos minions ou remover minions existentes, para que a lista seja refletida no site.
+A tabela pedido armazena os pedidos realizados pelos usuários. No momento, essa tabela é ilustrativa. Os dados são salvos corretamente, mas ainda não existe nenhuma aplicação prática para esses dados.
+
 ## AWS Api Gateway exemplos
 
 Recuperar lista de minions:\
